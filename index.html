@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Style.css">
+    <title>Joyeux Anniversaire Mon Amour ❤️</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
+    <!-- Font Awesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400;1,600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: '#B76E79',
+                        softPink: '#FFF0F3',
+                        deepRose: '#FF4D6D',
+                        romanticRed: '#C9184A',
+                        blushPink: '#FFB3C1',
+                        goldAccent: '#D4AF37'
+                    },
+                    fontFamily: {
+                        playfair: ['"Playfair Display"', 'serif'],
+                        montserrat: ['"Montserrat"', 'sans-serif'],
+                        cursive: ['"Dancing Script"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Fichier CSS externe -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gradient-to-br from-softPink via-white to-blushPink/30 font-montserrat text-gray-800 antialiased relative overflow-x-hidden min-h-screen">
+
+    <!-- Canvas de particules de cœurs -->
+    <canvas id="heartCanvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+
+    <!-- Bouton de lecteur de musique -->
+    <div class="fixed top-5 right-5 z-50">
+        <button id="musicToggle" onclick="toggleMusic()" class="glass-card p-3.5 rounded-full shadow-lg hover:scale-110 transition-all duration-300 flex items-center justify-center text-romanticRed cursor-pointer" title="Musique d'ambiance">
+            <i id="musicIcon" class="fas fa-music text-xl"></i>
+        </button>
+        <audio id="bgMusic" loop preload="auto">
+            <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-piano-wedding-love-116047.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <!-- Conteneur principal -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 py-8 space-y-20">
+
+        <!-- HERO SECTION -->
+        <header class="text-center pt-10 pb-6 flex flex-col items-center justify-center min-h-[85vh]">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-romanticRed text-sm font-semibold mb-6 animate-pulse">
+                <i class="fas fa-heart"></i> Une surprise faite spécialement pour toi <i class="fas fa-heart"></i>
+            </div>
+            
+            <h1 class="font-playfair text-4xl sm:text-6xl md:text-7xl font-bold text-gray-900 leading-tight mb-4">
+                Joyeux Anniversaire <br>
+                <span class="font-cursive text-5xl sm:text-7xl md:text-8xl text-romanticRed block mt-2 drop-shadow-sm">Mon Amour Éternel</span>
+            </h1>
+            
+            <p class="text-gray-600 max-w-lg text-base sm:text-lg mb-8 font-light italic">
+                Aujourd'hui, le 22 Octobre, nous célébrons la personne extraordinaire qui illumine ma vie chaque jour.
+            </p>
+
+            <!-- COMPTE À REBOURS -->
+            <div class="glass-card rounded-3xl p-6 sm:p-8 w-full max-w-2xl shadow-xl border border-white/80 mb-8 transform hover:scale-[1.01] transition-all">
+                <h2 class="text-sm uppercase tracking-widest text-gray-500 font-semibold mb-4 text-center">Compte à Rebours d'Anniversaire (22 Octobre)</h2>
+                <div class="grid grid-cols-4 gap-2 sm:gap-4 text-center" id="birthdayCountdown">
+                    <div class="bg-white/80 p-3 sm:p-4 rounded-2xl shadow-sm">
+                        <span id="cd-days" class="font-playfair text-2xl sm:text-4xl font-bold text-romanticRed block">00</span>
+                        <span class="text-xs text-gray-500 font-medium">Jours</span>
+                    </div>
+                    <div class="bg-white/80 p-3 sm:p-4 rounded-2xl shadow-sm">
+                        <span id="cd-hours" class="font-playfair text-2xl sm:text-4xl font-bold text-romanticRed block">00</span>
+                        <span class="text-xs text-gray-500 font-medium">Heures</span>
+                    </div>
+                    <div class="bg-white/80 p-3 sm:p-4 rounded-2xl shadow-sm">
+                        <span id="cd-minutes" class="font-playfair text-2xl sm:text-4xl font-bold text-romanticRed block">00</span>
+                        <span class="text-xs text-gray-500 font-medium">Minutes</span>
+                    </div>
+                    <div class="bg-white/80 p-3 sm:p-4 rounded-2xl shadow-sm">
+                        <span id="cd-seconds" class="font-playfair text-2xl sm:text-4xl font-bold text-romanticRed block">00</span>
+                        <span class="text-xs text-gray-500 font-medium">Secondes</span>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#notre-histoire" class="inline-flex items-center gap-3 bg-gradient-to-r from-deepRose to-romanticRed text-white px-8 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group">
+                Découvrir Notre Histoire 
+                <i class="fas fa-arrow-down group-hover:translate-y-1 transition-transform"></i>
+            </a>
+        </header>
+
+        <!-- TIMELINE & COMPTEUR D'AMOUR -->
+        <section id="notre-histoire" class="scroll-mt-10">
+            <div class="text-center mb-12">
+                <span class="text-romanticRed font-semibold text-sm uppercase tracking-widest">Les Étapes Inoubliables</span>
+                <h2 class="font-playfair text-3xl sm:text-5xl font-bold text-gray-900 mt-2">Notre Histoire d'Amour</h2>
+                <div class="w-16 h-1 bg-romanticRed mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Rencontre -->
+                <div class="glass-card p-8 rounded-3xl relative overflow-hidden group hover:border-romanticRed/40 transition-all">
+                    <div class="absolute -right-4 -bottom-4 text-9xl text-blushPink/20 font-playfair font-bold pointer-events-none">01</div>
+                    <div class="w-12 h-12 rounded-2xl bg-deepRose/10 text-deepRose flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <span class="text-sm font-semibold text-romanticRed bg-deepRose/10 px-3 py-1 rounded-full"></span>
+                    <h3 class="font-playfair text-2xl font-bold text-gray-800 mt-3 mb-2">Notre Première Rencontre</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Le jour où nos yeux se sont croisés pour la toute première fois lors d'une réunion dans votre annexe. Un moment gravé à jamais dans mon cœur.
+                    </p>
+                </div>
+
+                <!-- Mise en couple -->
+                <div class="glass-card p-8 rounded-3xl relative overflow-hidden group hover:border-romanticRed/40 transition-all">
+                    <div class="absolute -right-4 -bottom-4 text-9xl text-blushPink/20 font-playfair font-bold pointer-events-none">02</div>
+                    <div class="w-12 h-12 rounded-2xl bg-deepRose/10 text-deepRose flex items-center justify-center text-xl font-bold mb-4">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <span class="text-sm font-semibold text-romanticRed bg-deepRose/10 px-3 py-1 rounded-full">27 Août 2026</span>
+                    <h3 class="font-playfair text-2xl font-bold text-gray-800 mt-3 mb-2">Le Début de Notre Amour</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Le jour officiel où nos chemins se sont unis pour ne former plus qu'un. Le premier chapitre de notre magnifique aventure ensemble.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Compteur Dynamique d'amour -->
+            <div class="glass-card p-8 rounded-3xl text-center border-2 border-deepRose/20 shadow-lg bg-gradient-to-br from-white/90 to-softPink/50">
+                <h3 class="font-playfair text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Ensemble depuis le 27 Août 2026</h3>
+                <p class="text-gray-500 text-sm mb-6">Chaque seconde à tes côtés est un cadeau précieux...</p>
+                
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="loveCounter">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span id="love-days" class="font-playfair text-3xl font-bold text-romanticRed block">0</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Jours</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span id="love-hours" class="font-playfair text-3xl font-bold text-romanticRed block">0</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Heures</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span id="love-minutes" class="font-playfair text-3xl font-bold text-romanticRed block">0</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Minutes</span>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <span id="love-seconds" class="font-playfair text-3xl font-bold text-romanticRed block">0</span>
+                        <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold">Secondes</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JEU DE LA DATE DE RENCONTRE -->
+        <section id="jeu-rencontre" class="scroll-mt-10">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl border-2 border-deepRose/30 shadow-2xl relative overflow-hidden">
+                <div class="text-center max-w-2xl mx-auto">
+                    <div class="w-16 h-16 bg-romanticRed/10 text-romanticRed rounded-full flex items-center justify-center text-2xl mx-auto mb-4">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <span class="text-romanticRed font-semibold text-xs uppercase tracking-widest">Test de mémoire d'amour</span>
+                    <h2 class="font-playfair text-2xl sm:text-4xl font-bold text-gray-900 mt-2 mb-4">
+                        Te souviens-tu du jour où nos chemins se sont croisés pour la première fois dans votre annexe ?
+                    </h2>
+                    <p class="text-gray-600 text-sm mb-8">Clique sur la bonne date ci-dessous !</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <button onclick="checkDateAnswer('10 Mai 2026', false, this)" class="date-option-btn glass-card hover:bg-white p-4 rounded-2xl font-semibold text-gray-700 hover:text-romanticRed border border-pink-200 transition-all hover:scale-105 active:scale-95 shadow-sm">
+                            10 Mai 2026
+                        </button>
+                        <button onclick="checkDateAnswer('15 Juin 2026', true, this)" class="date-option-btn glass-card hover:bg-white p-4 rounded-2xl font-semibold text-gray-700 hover:text-romanticRed border border-pink-200 transition-all hover:scale-105 active:scale-95 shadow-sm">
+                            15 Juin 2026
+                        </button>
+                        <button onclick="checkDateAnswer('20 Juillet 2026', false, this)" class="date-option-btn glass-card hover:bg-white p-4 rounded-2xl font-semibold text-gray-700 hover:text-romanticRed border border-pink-200 transition-all hover:scale-105 active:scale-95 shadow-sm">
+                            20 Juillet 2026
+                        </button>
+                        <button onclick="checkDateAnswer('27 Août 2026', false, this)" class="date-option-btn glass-card hover:bg-white p-4 rounded-2xl font-semibold text-gray-700 hover:text-romanticRed border border-pink-200 transition-all hover:scale-105 active:scale-95 shadow-sm">
+                            27 Août 2026
+                        </button>
+                    </div>
+
+                    <div id="gameResultContainer" class="hidden min-h-[80px] flex items-center justify-center">
+                        <div id="gameResultMessage" class="p-4 rounded-2xl font-medium text-center text-sm sm:text-base transition-all"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GALERIE PHOTO -->
+        <section id="galerie" class="scroll-mt-10">
+            <div class="text-center mb-12">
+                <span class="text-romanticRed font-semibold text-sm uppercase tracking-widest">Nos Précieux Souvenirs</span>
+                <h2 class="font-playfair text-3xl sm:text-5xl font-bold text-gray-900 mt-2">Notre Galerie d'Amour</h2>
+                <p class="text-gray-500 text-sm mt-2">Chaque image raconte un morceau de notre bonheur</p>
+                <div class="w-16 h-1 bg-romanticRed mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="A.jpeg" alt="Souvenir 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Un moment magique ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Notre prémier date ❤️</p>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="Main.jpeg" alt="Souvenir 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Main dans la main ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Une main si douce que la tienne ❤️</p>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="Tatoue.jpeg" alt="Souvenir 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Ma pétite princesse adorée ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Un faux tatouage sur ma main mais réel sur mon coeur ❤️</p>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="Tatouee.jpeg" alt="Souvenir 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Ma pétite princesse adorée ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Le nom d'un homme amoureux ❤️</p>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="Coeur.jpeg" alt="Souvenir 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Ma pétite princesse adorée ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Ma pétite princesse adorée ❤️</p>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="AL.jpeg" alt="Souvenir 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Mon croustillant ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Ton regard qui m'a fait fondre❤️</p>
+                </div>
+
+
+                <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="Pieds.jpeg" alt="Souvenir 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Ma BadGirl ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Les pieds de deux personnes qui se sont choisis❤️</p>
+                </div>
+
+                <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="Hijab.jpeg" alt="Souvenir 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Mon bonheur ultime ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Une âme si pure ❤️</p>
+                </div>
+
+                 <div class="glass-card rounded-3xl overflow-hidden p-3 group hover:scale-[1.02] transition-all duration-300 shadow-lg">
+                    <div class="relative h-64 rounded-2xl overflow-hidden bg-pink-100">
+                        <img src="Au.jpeg" alt="Souvenir 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-sm font-medium"><i class="fas fa-heart text-romanticRed mr-2"></i>Mon seul unique amour ❤️</span>
+                        </div>
+                    </div>
+                    <p class="text-center text-xs font-semibold text-gray-600 mt-3 py-1">Un moment de pur bonheur ❤️</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- DECLARATION D'AMOUR -->
+        <section id="lettre-amour" class="scroll-mt-10">
+            <div class="text-center mb-8">
+                <span class="text-romanticRed font-semibold text-sm uppercase tracking-widest">Mots Doux</span>
+                <h2 class="font-playfair text-3xl sm:text-5xl font-bold text-gray-900 mt-2">Ma Déclaration d'Amour</h2>
+            </div>
+
+            <div class="max-w-2xl mx-auto">
+                <div id="envelopeCard" onclick="openLoveLetter()" class="glass-card p-8 sm:p-12 rounded-3xl border-2 border-dashed border-romanticRed/40 text-center cursor-pointer hover:scale-105 transition-all duration-300 shadow-xl group">
+                    <div class="w-20 h-20 bg-romanticRed/10 text-romanticRed rounded-full flex items-center justify-center text-3xl mx-auto mb-4 group-hover:rotate-12 transition-transform">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                    <h3 class="font-playfair text-2xl font-bold text-gray-800 mb-2">Une lettre spéciale pour toi</h3>
+                    <p class="text-gray-500 text-sm mb-6">Clique ici pour ouvrir ton enveloppe secrète ❤️</p>
+                    <span class="inline-block bg-romanticRed text-white px-6 py-2.5 rounded-full text-xs uppercase tracking-wider font-semibold shadow-md">Ouvrir la lettre</span>
+                </div>
+
+                <div id="letterModal" class="hidden glass-card p-8 sm:p-12 rounded-3xl border border-white/80 shadow-2xl relative animate-float">
+                    <button onclick="closeLoveLetter()" class="absolute top-4 right-4 text-gray-400 hover:text-romanticRed p-2 rounded-full text-xl transition-colors">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    
+                    <div class="text-center mb-6">
+                        <span class="font-cursive text-3xl text-romanticRed">Aissata TRAORE,</span>
+                    </div>
+
+                    <div class="prose text-gray-700 leading-relaxed font-montserrat text-sm sm:text-base space-y-4 italic">
+                        <p>
+                            Aujourd'hui est un jour tellement spécial. En célébrant ton anniversaire, je veux prendre un moment pour te rappeler à quel point tu occupes une place immense et inestimable dans ma vie.
+                        </p>
+                        <p>
+                            Depuis ce fameux 15 Juin 2026 dans votre annexe, ma vie a pris une tout autre couleur. Et depuis le 27 Août 2026, chaque jour passé à tes côtés n'est que pur bonheur et sérénité.
+                        </p>
+                        <p class="font-semibold text-romanticRed not-italic text-center py-2 text-base sm:text-lg">
+                            Je veux que tu saches que tu comptes plus que tout pour moi. Je serai TOUJOURS là pour toi, dans chaque moment de joie comme dans les moments d'épreuves, pour te soutenir, te protéger et t'aimer inconditionnellement.
+                        </p>
+                        <p>
+                            Merci d'être la femme incroyable, douce et magnifique que tu es. Joyeux anniversaire mon cœur !
+                        </p>
+                    </div>
+
+                    <div class="mt-8 text-right font-cursive text-2xl text-romanticRed font-bold">
+                       <BR> Ton amour, </BR>
+                        Lassine DIARRA ❤️
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- GÂTEAU ET BOUGIES -->
+        <section id="gateau" class="scroll-mt-10 pb-12">
+            <div class="glass-card p-8 sm:p-12 rounded-3xl text-center border-2 border-pink-200 shadow-xl relative overflow-hidden">
+                <span class="text-romanticRed font-semibold text-xs uppercase tracking-widest">Moment Magique</span>
+                <h2 class="font-playfair text-3xl sm:text-4xl font-bold text-gray-900 mt-1 mb-8">Fais un Vœu et Souffle tes Bougies !</h2>
+
+                <div class="relative w-48 h-48 mx-auto mb-8 flex flex-col items-center justify-end">
+                    <div id="flamesContainer" class="flex gap-6 mb-1 z-10">
+                        <div class="flame w-4 h-6 bg-amber-400 rounded-full blur-[1px] border border-amber-200"></div>
+                        <div class="flame w-4 h-6 bg-amber-400 rounded-full blur-[1px] border border-amber-200"></div>
+                        <div class="flame w-4 h-6 bg-amber-400 rounded-full blur-[1px] border border-amber-200"></div>
+                    </div>
+
+                    <div class="flex gap-6 mb-1 z-10">
+                        <div class="w-2 h-8 bg-gradient-to-b from-pink-300 to-pink-500 rounded-t-sm shadow-sm"></div>
+                        <div class="w-2 h-8 bg-gradient-to-b from-purple-300 to-purple-500 rounded-t-sm shadow-sm"></div>
+                        <div class="w-2 h-8 bg-gradient-to-b from-pink-300 to-pink-500 rounded-t-sm shadow-sm"></div>
+                    </div>
+
+                    <div class="w-36 h-10 bg-pink-300 rounded-t-xl border-b-4 border-pink-400 shadow-md flex items-center justify-center text-xs font-bold text-white">❤️ ❤️</div>
+                    <div class="w-48 h-14 bg-rose-400 rounded-t-2xl border-b-4 border-rose-500 shadow-lg flex items-center justify-center text-sm font-bold text-white">Joyeux Anniversaire</div>
+                    <div class="w-56 h-6 bg-rose-600 rounded-b-xl shadow-xl"></div>
+                </div>
+
+                <button id="blowCandlesBtn" onclick="blowCandles()" class="bg-gradient-to-r from-deepRose to-romanticRed text-white font-semibold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 inline-flex items-center gap-3">
+                    <i class="fas fa-wind"></i> Souffler les bougies !
+                </button>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center py-6 text-gray-500 text-xs border-t border-pink-200/50">
+            <p>Fait avec tout mon amour pour ton anniversaire - 22/10/2005 ❤️</p>
+        </footer>
+
+    </div>
+
+    <!-- Fichier JavaScript externe -->
+    <script src="Script.js"></script>
+</body>
+</html>
